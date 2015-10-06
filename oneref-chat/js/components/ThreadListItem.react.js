@@ -45,7 +45,7 @@ var ThreadListItem = React.createClass({
   },
 
   _onClick: function() {
-    ChatActions.clickThread(this.props.thread.id,this.props.storeRefUpdater);
+    ChatActions.clickThread(this.props.thread.id,this.props.stateRefUpdater);
   }
 
 });

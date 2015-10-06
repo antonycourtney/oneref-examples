@@ -14,13 +14,6 @@ var MessageComposer = require('./MessageComposer.react');
 var MessageListItem = require('./MessageListItem.react');
 var React = require('react');
 
-function getStateFromStores() {
-  return {
-    messages: MessageStore.getAllForCurrentThread(),
-    thread: ThreadStore.getCurrent()
-  };
-}
-
 function getMessageListItem(message) {
   return (
     <MessageListItem
@@ -48,7 +41,7 @@ var MessageSection = React.createClass({
         <MessageComposer 
           threadID={this.props.thread.id}
           threadName={this.props.thread.name} 
-          storeRefUpdater={this.props.storeRefUpdater}/>
+          stateRefUpdater={this.props.stateRefUpdater}/>
       </div>
     );
   },
@@ -61,13 +54,6 @@ var MessageSection = React.createClass({
     var ul = this.refs.messageList.getDOMNode();
     ul.scrollTop = ul.scrollHeight;
   },
-
-  /**
-   * Event handler for 'change' events coming from the MessageStore
-   */
-  _onChange: function() {
-    this.setState(getStateFromStores());
-  }
 
 });
 

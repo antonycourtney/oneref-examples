@@ -2,7 +2,7 @@
  * Responses to user interaction
  *
  * Each action takes action-specific parameters and an updater callback to invoke with
- * a Store -> Store update function
+ * a (ChatAppState) => ChatAppState update function
  */
 import * as ChatWebAPIUtils from './utils/ChatWebAPIUtils';
 import * as ChatMessageUtils from './utils/ChatMessageUtils';
@@ -11,7 +11,7 @@ import Message from './Message';
 'use strict';
 
 export function clickThread(threadID,updater) {
-  updater((threadStore) => threadStore.setCurrentThread(threadID))
+  updater((state) => state.setCurrentThread(threadID))
 }
 
 export function createMessage(text,threadID,threadName,updater) {
@@ -19,6 +19,6 @@ export function createMessage(text,threadID,threadName,updater) {
   ChatWebAPIUtils.createMessage(message,threadName,(rawMessage) => {
     const convMessage = ChatMessageUtils.convertRawMessage(rawMessage,threadID);
     const message = new Message(convMessage);
-    updater((threadStore) => threadStore.addMessage(message));
+    updater((state) => state.addMessage(message));
   });
 }

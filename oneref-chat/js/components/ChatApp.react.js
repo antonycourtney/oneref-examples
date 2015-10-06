@@ -17,40 +17,40 @@ var ThreadSection = require('./ThreadSection.react');
 /**
  * Top level chat app.
  *
- * Differs from original Flux-based version because we listen to the 
- * Thread store here, and pass along current state as props to
+ * Differs from original Flux-based version because we listen to the
+ * appStateRef here and pass along current state as props to
  * ThreadSection and MessageSection.
  */
-function getStateFromStore(storeRef) {
-  const threadStore = storeRef.getValue();
+function getAppState(stateRef) {
+  const appState = stateRef.getValue();
   return {
-    threads: threadStore.getAllChrono(),
-    currentThreadID: threadStore.currentThreadID,
-    unreadCount: threadStore.unreadCount,
-    currentThread: threadStore.getCurrentThread()
+    threads: appState.getAllChrono(),
+    currentThreadID: appState.currentThreadID,
+    unreadCount: appState.unreadCount,
+    currentThread: appState.getCurrentThread()
   };
 }
 
 var ChatApp = React.createClass({
   getInitialState: function() {
-    return getStateFromStore(this.props.storeRef);
+    return getAppState(this.props.stateRef);
   },
 
   componentDidMount: function() {
-    const storeRef=this.props.storeRef;
-    storeRef.on("change",this._onChange);
+    const stateRef=this.props.stateRef;
+    stateRef.on("change",this._onChange);
   },
 
   componentWillUnmount: function() {
-    const storeRef=this.props.storeRef;
-    storeRef.removeListener("change",this._onChange);
+    const stateRef=this.props.stateRef;
+    stateRef.removeListener("change",this._onChange);
   },
 
   /**
-   * Event handler for 'change' events coming from the store
+   * Event handler for 'change' events coming from the state
    */
   _onChange: function() {
-    this.setState(getStateFromStore(this.props.storeRef));
+    this.setState(getAppState(this.props.stateRef));
   },
 
   render: function() {
@@ -60,10 +60,10 @@ var ChatApp = React.createClass({
           threads={this.state.threads} 
           currentThreadID={this.state.currentThreadID} 
           unreadCount={this.state.unreadCount} 
-          storeRefUpdater={this.props.storeRefUpdater} />
+          stateRefUpdater={this.props.stateRefUpdater} />
         <MessageSection
           thread={this.state.currentThread}
-          storeRefUpdater={this.props.storeRefUpdater} />
+          stateRefUpdater={this.props.stateRefUpdater} />
       </div>
     );
   }

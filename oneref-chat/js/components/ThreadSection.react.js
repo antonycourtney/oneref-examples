@@ -26,7 +26,7 @@ var ThreadSection = React.createClass({
           key={thread.id}
           thread={thread}
           currentThreadID={this.props.currentThreadID}
-          storeRefUpdater={this.props.storeRefUpdater}
+          stateRefUpdater={this.props.stateRefUpdater}
         />
       );
     }, this);

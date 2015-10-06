@@ -1,6 +1,3 @@
-/**
- * Immutable representation of a collection of message threads (conversations)
- */
 'use strict';
 
 import * as Immutable from 'immutable';
@@ -10,17 +7,21 @@ import Thread from './Thread';
 const emptyThread = new Thread();
 
 /**
- * A collection of message threads
+ *
+ * State of Chat application as an Immutable record
+ *
+ * Our application state consists of a collection of message threads
+ * and a current thread (identified by its thread ID)
  *
  * Each thread id maps to a Thread (a collection of Message) 
  */
-export default class ThreadStore extends Immutable.Record({
+export default class ChatAppState extends Immutable.Record({
   threadIdMap: Immutable.Map(),  // map from thread id to Thread
   currentThreadID: null
 }) {
   /**
    * add or update a single message
-   * functional API - returns an updated ThreadStore
+   * functional API - returns an updated ChatAppState 
    */
   addMessage(message) {
     // curConvo is state of the conversation for this thread before adding
@@ -35,6 +36,7 @@ export default class ThreadStore extends Immutable.Record({
 
   /**
    * mark the specified thread ID as read
+   * functional API - returns an updated ChatAppState 
    */
   markRead(threadID) {
     const curConvo = this.threadIdMap.get(threadID,emptyThread);
@@ -45,6 +47,7 @@ export default class ThreadStore extends Immutable.Record({
 
   /**
    * set the current Thread ID and mark thread as read
+   * functional API - returns an updated ChatAppState 
    */
   setCurrentThread(threadID) {
     return this.set('currentThreadID',threadID).markRead(threadID);
