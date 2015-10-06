@@ -6,8 +6,8 @@ OneRef and these examples are described in the article **TODO: link to article**
 
 The examples here were ported from the corresponding [Flux examples](https://github.com/facebook/flux/tree/master/examples):
 
-- (oneref-todomvc)[examples/oneref-todomvc] - Port of Flux's port of the classic [TodoMVC](http://todomvc.com/) example to OneRef.
-- (oneref-chat)[examples/oneref-chat] - Port of Flux's [chat example](https://github.com/facebook/flux/tree/master/examples/flux-chat)  
+- **oneref-todomvc/** - Port of Flux's port of the classic [TodoMVC](http://todomvc.com/) example to OneRef.
+- **oneref-chat/** - Port of Flux's [chat example](https://github.com/facebook/flux/tree/master/examples/flux-chat)  
 
 # Running the Examples
 
