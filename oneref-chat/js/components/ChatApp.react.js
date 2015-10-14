@@ -17,52 +17,21 @@ var ThreadSection = require('./ThreadSection.react');
 /**
  * Top level chat app.
  *
- * Differs from original Flux-based version because we listen to the
- * appStateRef here and pass along current state as props to
- * ThreadSection and MessageSection.
+ * Differs from Flux version by taking all app state from appState property
+ *
  */
-function getAppState(stateRef) {
-  const appState = stateRef.getValue();
-  return {
-    threads: appState.getAllChrono(),
-    currentThreadID: appState.currentThreadID,
-    unreadCount: appState.unreadCount,
-    currentThread: appState.getCurrentThread()
-  };
-}
-
 var ChatApp = React.createClass({
-  getInitialState: function() {
-    return getAppState(this.props.stateRef);
-  },
-
-  componentDidMount: function() {
-    const stateRef=this.props.stateRef;
-    stateRef.on("change",this._onChange);
-  },
-
-  componentWillUnmount: function() {
-    const stateRef=this.props.stateRef;
-    stateRef.removeListener("change",this._onChange);
-  },
-
-  /**
-   * Event handler for 'change' events coming from the state
-   */
-  _onChange: function() {
-    this.setState(getAppState(this.props.stateRef));
-  },
-
   render: function() {
+    const appState = this.props.appState;
     return (
       <div className="chatapp">
         <ThreadSection 
-          threads={this.state.threads} 
-          currentThreadID={this.state.currentThreadID} 
-          unreadCount={this.state.unreadCount} 
+          threads={appState.getAllChrono()} 
+          currentThreadID={appState.currentThreadID} 
+          unreadCount={appState.unreadCount} 
           stateRefUpdater={this.props.stateRefUpdater} />
         <MessageSection
-          thread={this.state.currentThread}
+          thread={appState.getCurrentThread()}
           stateRefUpdater={this.props.stateRefUpdater} />
       </div>
     );

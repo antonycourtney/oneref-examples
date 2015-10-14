@@ -61,19 +61,19 @@
 	
 	var OneRef = _interopRequireWildcard(_oneref);
 	
-	var _ChatExampleData = __webpack_require__(/*! ./ChatExampleData */ 189);
+	var _ChatExampleData = __webpack_require__(/*! ./ChatExampleData */ 192);
 	
 	var ChatExampleData = _interopRequireWildcard(_ChatExampleData);
 	
-	var _utilsChatWebAPIUtils = __webpack_require__(/*! ./utils/ChatWebAPIUtils */ 190);
+	var _utilsChatWebAPIUtils = __webpack_require__(/*! ./utils/ChatWebAPIUtils */ 193);
 	
 	var ChatWebAPIUtils = _interopRequireWildcard(_utilsChatWebAPIUtils);
 	
-	var _ChatAppState = __webpack_require__(/*! ./ChatAppState */ 194);
+	var _ChatAppState = __webpack_require__(/*! ./ChatAppState */ 197);
 	
 	var _ChatAppState2 = _interopRequireDefault(_ChatAppState);
 	
-	var _componentsChatAppReact = __webpack_require__(/*! ./components/ChatApp.react */ 196);
+	var _componentsChatAppReact = __webpack_require__(/*! ./components/ChatApp.react */ 199);
 	
 	var _componentsChatAppReact2 = _interopRequireDefault(_componentsChatAppReact);
 	
@@ -87,9 +87,7 @@
 	var initialState = baseState.markRead(baseState.currentThreadID);
 	var stateRef = new OneRef.Ref(initialState);
 	
-	var stateRefUpdater = OneRef.refUpdater(stateRef);
-	
-	React.render(React.createElement(_componentsChatAppReact2['default'], { stateRef: stateRef, stateRefUpdater: stateRefUpdater }), document.getElementById('react'));
+	React.render(React.createElement(OneRef.AppContainer, { appClass: _componentsChatAppReact2['default'], stateRef: stateRef }), document.getElementById('react'));
 
 /***/ },
 /* 1 */
@@ -20937,6 +20935,705 @@
 
 /***/ },
 /* 157 */
+/*!*******************************!*\
+  !*** ./~/oneref/lib/index.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _interopRequireDefault = __webpack_require__(/*! babel-runtime/helpers/interop-require-default */ 158)['default'];
+	
+	var _interopRequireWildcard = __webpack_require__(/*! babel-runtime/helpers/interop-require-wildcard */ 159)['default'];
+	
+	var _AppContainer = __webpack_require__(/*! ./AppContainer */ 160);
+	
+	var _AppContainer2 = _interopRequireDefault(_AppContainer);
+	
+	var _oneRef = __webpack_require__(/*! ./oneRef */ 190);
+	
+	var OneRef = _interopRequireWildcard(_oneRef);
+	
+	module.exports = { AppContainer: _AppContainer2['default'], Ref: OneRef.Ref, refUpdater: OneRef.refUpdater };
+
+/***/ },
+/* 158 */
+/*!************************************************************!*\
+  !*** ./~/babel-runtime/helpers/interop-require-default.js ***!
+  \************************************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	exports["default"] = function (obj) {
+	  return obj && obj.__esModule ? obj : {
+	    "default": obj
+	  };
+	};
+	
+	exports.__esModule = true;
+
+/***/ },
+/* 159 */
+/*!*************************************************************!*\
+  !*** ./~/babel-runtime/helpers/interop-require-wildcard.js ***!
+  \*************************************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	exports["default"] = function (obj) {
+	  if (obj && obj.__esModule) {
+	    return obj;
+	  } else {
+	    var newObj = {};
+	
+	    if (obj != null) {
+	      for (var key in obj) {
+	        if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+	      }
+	    }
+	
+	    newObj["default"] = obj;
+	    return newObj;
+	  }
+	};
+	
+	exports.__esModule = true;
+
+/***/ },
+/* 160 */
+/*!**************************************!*\
+  !*** ./~/oneref/lib/AppContainer.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Generic AppContainer for unsing OneRef with React.
+	 *
+	 * usage:
+	 *
+	 *   import MyApp from './myApp';  // React class 
+	 *   <AppContainer appClass={MyApp} stateRef={...}  />,
+	 *
+	 * creates an instance of appClass, passing appState (current value of stateRef)
+	 * and stateRefUpdater as properties.
+	 *
+	 * Listens for changes on stateRef, setting local state (which will result in
+	 * re-rendering children) as needed.
+	 */
+	
+	'use strict';
+	
+	var _get = __webpack_require__(/*! babel-runtime/helpers/get */ 161)['default'];
+	
+	var _inherits = __webpack_require__(/*! babel-runtime/helpers/inherits */ 175)['default'];
+	
+	var _createClass = __webpack_require__(/*! babel-runtime/helpers/create-class */ 186)['default'];
+	
+	var _classCallCheck = __webpack_require__(/*! babel-runtime/helpers/class-call-check */ 189)['default'];
+	
+	var _interopRequireDefault = __webpack_require__(/*! babel-runtime/helpers/interop-require-default */ 158)['default'];
+	
+	var _interopRequireWildcard = __webpack_require__(/*! babel-runtime/helpers/interop-require-wildcard */ 159)['default'];
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _oneRef = __webpack_require__(/*! ./oneRef */ 190);
+	
+	var OneRef = _interopRequireWildcard(_oneRef);
+	
+	function getAppState(stateRef) {
+	  return { appState: stateRef.getValue() };
+	}
+	
+	var AppContainer = (function (_React$Component) {
+	  _inherits(AppContainer, _React$Component);
+	
+	  function AppContainer(props) {
+	    var _this = this;
+	
+	    _classCallCheck(this, AppContainer);
+	
+	    _get(Object.getPrototypeOf(AppContainer.prototype), 'constructor', this).call(this, props);
+	    this.state = getAppState(this.props.stateRef);
+	    this.state.stateRefUpdater = OneRef.refUpdater(this.props.stateRef);
+	    this.state.refListener = function () {
+	      _this._onChange();
+	    };
+	  }
+	
+	  _createClass(AppContainer, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var stateRef = this.props.stateRef;
+	      stateRef.on("change", this.state.refListener);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      var stateRef = this.props.stateRef;
+	      stateRef.removeListener("change", this.state.refListener);
+	    }
+	
+	    /**
+	     * @return {object}
+	     */
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var childProps = { appState: this.state.appState, stateRefUpdater: this.state.stateRefUpdater };
+	      var childElement = _react2['default'].createElement(this.props.appClass, childProps);
+	      return childElement;
+	    }
+	
+	    /**
+	     * Event handler for 'change' events coming from the TodoState
+	     */
+	  }, {
+	    key: '_onChange',
+	    value: function _onChange() {
+	      this.setState(getAppState(this.props.stateRef));
+	    }
+	  }]);
+	
+	  return AppContainer;
+	})(_react2['default'].Component);
+	
+	exports['default'] = AppContainer;
+	module.exports = exports['default'];
+
+/***/ },
+/* 161 */
+/*!****************************************!*\
+  !*** ./~/babel-runtime/helpers/get.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _Object$getOwnPropertyDescriptor = __webpack_require__(/*! babel-runtime/core-js/object/get-own-property-descriptor */ 162)["default"];
+	
+	exports["default"] = function get(_x, _x2, _x3) {
+	  var _again = true;
+	
+	  _function: while (_again) {
+	    var object = _x,
+	        property = _x2,
+	        receiver = _x3;
+	    desc = parent = getter = undefined;
+	    _again = false;
+	    if (object === null) object = Function.prototype;
+	
+	    var desc = _Object$getOwnPropertyDescriptor(object, property);
+	
+	    if (desc === undefined) {
+	      var parent = Object.getPrototypeOf(object);
+	
+	      if (parent === null) {
+	        return undefined;
+	      } else {
+	        _x = parent;
+	        _x2 = property;
+	        _x3 = receiver;
+	        _again = true;
+	        continue _function;
+	      }
+	    } else if ("value" in desc) {
+	      return desc.value;
+	    } else {
+	      var getter = desc.get;
+	
+	      if (getter === undefined) {
+	        return undefined;
+	      }
+	
+	      return getter.call(receiver);
+	    }
+	  }
+	};
+	
+	exports.__esModule = true;
+
+/***/ },
+/* 162 */
+/*!***********************************************************************!*\
+  !*** ./~/babel-runtime/core-js/object/get-own-property-descriptor.js ***!
+  \***********************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(/*! core-js/library/fn/object/get-own-property-descriptor */ 163), __esModule: true };
+
+/***/ },
+/* 163 */
+/*!************************************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/fn/object/get-own-property-descriptor.js ***!
+  \************************************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var $ = __webpack_require__(/*! ../../modules/$ */ 164);
+	__webpack_require__(/*! ../../modules/es6.object.get-own-property-descriptor */ 165);
+	module.exports = function getOwnPropertyDescriptor(it, key){
+	  return $.getDesc(it, key);
+	};
+
+/***/ },
+/* 164 */
+/*!********************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.js ***!
+  \********************************************************/
+/***/ function(module, exports) {
+
+	var $Object = Object;
+	module.exports = {
+	  create:     $Object.create,
+	  getProto:   $Object.getPrototypeOf,
+	  isEnum:     {}.propertyIsEnumerable,
+	  getDesc:    $Object.getOwnPropertyDescriptor,
+	  setDesc:    $Object.defineProperty,
+	  setDescs:   $Object.defineProperties,
+	  getKeys:    $Object.keys,
+	  getNames:   $Object.getOwnPropertyNames,
+	  getSymbols: $Object.getOwnPropertySymbols,
+	  each:       [].forEach
+	};
+
+/***/ },
+/* 165 */
+/*!*********************************************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/es6.object.get-own-property-descriptor.js ***!
+  \*********************************************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+	var toIObject = __webpack_require__(/*! ./$.to-iobject */ 166);
+	
+	__webpack_require__(/*! ./$.object-sap */ 170)('getOwnPropertyDescriptor', function($getOwnPropertyDescriptor){
+	  return function getOwnPropertyDescriptor(it, key){
+	    return $getOwnPropertyDescriptor(toIObject(it), key);
+	  };
+	});
+
+/***/ },
+/* 166 */
+/*!*******************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.to-iobject.js ***!
+  \*******************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// to indexed object, toObject with fallback for non-array-like ES3 strings
+	var IObject = __webpack_require__(/*! ./$.iobject */ 167)
+	  , defined = __webpack_require__(/*! ./$.defined */ 169);
+	module.exports = function(it){
+	  return IObject(defined(it));
+	};
+
+/***/ },
+/* 167 */
+/*!****************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.iobject.js ***!
+  \****************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// indexed object, fallback for non-array-like ES3 strings
+	var cof = __webpack_require__(/*! ./$.cof */ 168);
+	module.exports = 0 in Object('z') ? Object : function(it){
+	  return cof(it) == 'String' ? it.split('') : Object(it);
+	};
+
+/***/ },
+/* 168 */
+/*!************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.cof.js ***!
+  \************************************************************/
+/***/ function(module, exports) {
+
+	var toString = {}.toString;
+	
+	module.exports = function(it){
+	  return toString.call(it).slice(8, -1);
+	};
+
+/***/ },
+/* 169 */
+/*!****************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.defined.js ***!
+  \****************************************************************/
+/***/ function(module, exports) {
+
+	// 7.2.1 RequireObjectCoercible(argument)
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
+	  return it;
+	};
+
+/***/ },
+/* 170 */
+/*!*******************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.object-sap.js ***!
+  \*******************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// most Object methods by ES6 should accept primitives
+	module.exports = function(KEY, exec){
+	  var $def = __webpack_require__(/*! ./$.def */ 171)
+	    , fn   = (__webpack_require__(/*! ./$.core */ 173).Object || {})[KEY] || Object[KEY]
+	    , exp  = {};
+	  exp[KEY] = exec(fn);
+	  $def($def.S + $def.F * __webpack_require__(/*! ./$.fails */ 174)(function(){ fn(1); }), 'Object', exp);
+	};
+
+/***/ },
+/* 171 */
+/*!************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.def.js ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var global    = __webpack_require__(/*! ./$.global */ 172)
+	  , core      = __webpack_require__(/*! ./$.core */ 173)
+	  , PROTOTYPE = 'prototype';
+	var ctx = function(fn, that){
+	  return function(){
+	    return fn.apply(that, arguments);
+	  };
+	};
+	var $def = function(type, name, source){
+	  var key, own, out, exp
+	    , isGlobal = type & $def.G
+	    , isProto  = type & $def.P
+	    , target   = isGlobal ? global : type & $def.S
+	        ? global[name] : (global[name] || {})[PROTOTYPE]
+	    , exports  = isGlobal ? core : core[name] || (core[name] = {});
+	  if(isGlobal)source = name;
+	  for(key in source){
+	    // contains in native
+	    own = !(type & $def.F) && target && key in target;
+	    if(own && key in exports)continue;
+	    // export native or passed
+	    out = own ? target[key] : source[key];
+	    // prevent global pollution for namespaces
+	    if(isGlobal && typeof target[key] != 'function')exp = source[key];
+	    // bind timers to global for call from export context
+	    else if(type & $def.B && own)exp = ctx(out, global);
+	    // wrap global constructors for prevent change them in library
+	    else if(type & $def.W && target[key] == out)!function(C){
+	      exp = function(param){
+	        return this instanceof C ? new C(param) : C(param);
+	      };
+	      exp[PROTOTYPE] = C[PROTOTYPE];
+	    }(out);
+	    else exp = isProto && typeof out == 'function' ? ctx(Function.call, out) : out;
+	    // export
+	    exports[key] = exp;
+	    if(isProto)(exports[PROTOTYPE] || (exports[PROTOTYPE] = {}))[key] = out;
+	  }
+	};
+	// type bitmap
+	$def.F = 1;  // forced
+	$def.G = 2;  // global
+	$def.S = 4;  // static
+	$def.P = 8;  // proto
+	$def.B = 16; // bind
+	$def.W = 32; // wrap
+	module.exports = $def;
+
+/***/ },
+/* 172 */
+/*!***************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.global.js ***!
+  \***************************************************************/
+/***/ function(module, exports) {
+
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	var UNDEFINED = 'undefined';
+	var global = module.exports = typeof window != UNDEFINED && window.Math == Math
+	  ? window : typeof self != UNDEFINED && self.Math == Math ? self : Function('return this')();
+	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+
+/***/ },
+/* 173 */
+/*!*************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.core.js ***!
+  \*************************************************************/
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '1.2.1'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 174 */
+/*!**************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.fails.js ***!
+  \**************************************************************/
+/***/ function(module, exports) {
+
+	module.exports = function(exec){
+	  try {
+	    return !!exec();
+	  } catch(e){
+	    return true;
+	  }
+	};
+
+/***/ },
+/* 175 */
+/*!*********************************************!*\
+  !*** ./~/babel-runtime/helpers/inherits.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _Object$create = __webpack_require__(/*! babel-runtime/core-js/object/create */ 176)["default"];
+	
+	var _Object$setPrototypeOf = __webpack_require__(/*! babel-runtime/core-js/object/set-prototype-of */ 178)["default"];
+	
+	exports["default"] = function (subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+	  }
+	
+	  subClass.prototype = _Object$create(superClass && superClass.prototype, {
+	    constructor: {
+	      value: subClass,
+	      enumerable: false,
+	      writable: true,
+	      configurable: true
+	    }
+	  });
+	  if (superClass) _Object$setPrototypeOf ? _Object$setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	};
+	
+	exports.__esModule = true;
+
+/***/ },
+/* 176 */
+/*!**************************************************!*\
+  !*** ./~/babel-runtime/core-js/object/create.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(/*! core-js/library/fn/object/create */ 177), __esModule: true };
+
+/***/ },
+/* 177 */
+/*!***************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/fn/object/create.js ***!
+  \***************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var $ = __webpack_require__(/*! ../../modules/$ */ 164);
+	module.exports = function create(P, D){
+	  return $.create(P, D);
+	};
+
+/***/ },
+/* 178 */
+/*!************************************************************!*\
+  !*** ./~/babel-runtime/core-js/object/set-prototype-of.js ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(/*! core-js/library/fn/object/set-prototype-of */ 179), __esModule: true };
+
+/***/ },
+/* 179 */
+/*!*************************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/fn/object/set-prototype-of.js ***!
+  \*************************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(/*! ../../modules/es6.object.set-prototype-of */ 180);
+	module.exports = __webpack_require__(/*! ../../modules/$.core */ 173).Object.setPrototypeOf;
+
+/***/ },
+/* 180 */
+/*!**********************************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/es6.object.set-prototype-of.js ***!
+  \**********************************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.19 Object.setPrototypeOf(O, proto)
+	var $def = __webpack_require__(/*! ./$.def */ 171);
+	$def($def.S, 'Object', {setPrototypeOf: __webpack_require__(/*! ./$.set-proto */ 181).set});
+
+/***/ },
+/* 181 */
+/*!******************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.set-proto.js ***!
+  \******************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// Works with __proto__ only. Old v8 can't work with null proto objects.
+	/* eslint-disable no-proto */
+	var getDesc  = __webpack_require__(/*! ./$ */ 164).getDesc
+	  , isObject = __webpack_require__(/*! ./$.is-object */ 182)
+	  , anObject = __webpack_require__(/*! ./$.an-object */ 183);
+	var check = function(O, proto){
+	  anObject(O);
+	  if(!isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
+	};
+	module.exports = {
+	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line no-proto
+	    function(test, buggy, set){
+	      try {
+	        set = __webpack_require__(/*! ./$.ctx */ 184)(Function.call, getDesc(Object.prototype, '__proto__').set, 2);
+	        set(test, []);
+	        buggy = !(test instanceof Array);
+	      } catch(e){ buggy = true; }
+	      return function setPrototypeOf(O, proto){
+	        check(O, proto);
+	        if(buggy)O.__proto__ = proto;
+	        else set(O, proto);
+	        return O;
+	      };
+	    }({}, false) : undefined),
+	  check: check
+	};
+
+/***/ },
+/* 182 */
+/*!******************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.is-object.js ***!
+  \******************************************************************/
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  return typeof it === 'object' ? it !== null : typeof it === 'function';
+	};
+
+/***/ },
+/* 183 */
+/*!******************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.an-object.js ***!
+  \******************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(/*! ./$.is-object */ 182);
+	module.exports = function(it){
+	  if(!isObject(it))throw TypeError(it + ' is not an object!');
+	  return it;
+	};
+
+/***/ },
+/* 184 */
+/*!************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.ctx.js ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+	var aFunction = __webpack_require__(/*! ./$.a-function */ 185);
+	module.exports = function(fn, that, length){
+	  aFunction(fn);
+	  if(that === undefined)return fn;
+	  switch(length){
+	    case 1: return function(a){
+	      return fn.call(that, a);
+	    };
+	    case 2: return function(a, b){
+	      return fn.call(that, a, b);
+	    };
+	    case 3: return function(a, b, c){
+	      return fn.call(that, a, b, c);
+	    };
+	  }
+	  return function(/* ...args */){
+	    return fn.apply(that, arguments);
+	  };
+	};
+
+/***/ },
+/* 185 */
+/*!*******************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/modules/$.a-function.js ***!
+  \*******************************************************************/
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+	  return it;
+	};
+
+/***/ },
+/* 186 */
+/*!*************************************************!*\
+  !*** ./~/babel-runtime/helpers/create-class.js ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _Object$defineProperty = __webpack_require__(/*! babel-runtime/core-js/object/define-property */ 187)["default"];
+	
+	exports["default"] = (function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];
+	      descriptor.enumerable = descriptor.enumerable || false;
+	      descriptor.configurable = true;
+	      if ("value" in descriptor) descriptor.writable = true;
+	
+	      _Object$defineProperty(target, descriptor.key, descriptor);
+	    }
+	  }
+	
+	  return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+	    if (staticProps) defineProperties(Constructor, staticProps);
+	    return Constructor;
+	  };
+	})();
+	
+	exports.__esModule = true;
+
+/***/ },
+/* 187 */
+/*!***********************************************************!*\
+  !*** ./~/babel-runtime/core-js/object/define-property.js ***!
+  \***********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(/*! core-js/library/fn/object/define-property */ 188), __esModule: true };
+
+/***/ },
+/* 188 */
+/*!************************************************************************!*\
+  !*** ./~/babel-runtime/~/core-js/library/fn/object/define-property.js ***!
+  \************************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var $ = __webpack_require__(/*! ../../modules/$ */ 164);
+	module.exports = function defineProperty(it, key, desc){
+	  return $.setDesc(it, key, desc);
+	};
+
+/***/ },
+/* 189 */
+/*!*****************************************************!*\
+  !*** ./~/babel-runtime/helpers/class-call-check.js ***!
+  \*****************************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	exports["default"] = function (instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	};
+	
+	exports.__esModule = true;
+
+/***/ },
+/* 190 */
 /*!********************************!*\
   !*** ./~/oneref/lib/oneRef.js ***!
   \********************************/
@@ -20944,21 +21641,21 @@
 
 	'use strict';
 	
-	var _get = __webpack_require__(/*! babel-runtime/helpers/get */ 158)['default'];
+	var _get = __webpack_require__(/*! babel-runtime/helpers/get */ 161)['default'];
 	
-	var _inherits = __webpack_require__(/*! babel-runtime/helpers/inherits */ 172)['default'];
+	var _inherits = __webpack_require__(/*! babel-runtime/helpers/inherits */ 175)['default'];
 	
-	var _createClass = __webpack_require__(/*! babel-runtime/helpers/create-class */ 183)['default'];
+	var _createClass = __webpack_require__(/*! babel-runtime/helpers/create-class */ 186)['default'];
 	
-	var _classCallCheck = __webpack_require__(/*! babel-runtime/helpers/class-call-check */ 186)['default'];
+	var _classCallCheck = __webpack_require__(/*! babel-runtime/helpers/class-call-check */ 189)['default'];
 	
-	var _interopRequireDefault = __webpack_require__(/*! babel-runtime/helpers/interop-require-default */ 187)['default'];
+	var _interopRequireDefault = __webpack_require__(/*! babel-runtime/helpers/interop-require-default */ 158)['default'];
 	
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
 	
-	var _events = __webpack_require__(/*! events */ 188);
+	var _events = __webpack_require__(/*! events */ 191);
 	
 	var _events2 = _interopRequireDefault(_events);
 	
@@ -21029,547 +21726,7 @@
 	exports.refUpdater = refUpdater;
 
 /***/ },
-/* 158 */
-/*!****************************************!*\
-  !*** ./~/babel-runtime/helpers/get.js ***!
-  \****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _Object$getOwnPropertyDescriptor = __webpack_require__(/*! babel-runtime/core-js/object/get-own-property-descriptor */ 159)["default"];
-	
-	exports["default"] = function get(_x, _x2, _x3) {
-	  var _again = true;
-	
-	  _function: while (_again) {
-	    var object = _x,
-	        property = _x2,
-	        receiver = _x3;
-	    desc = parent = getter = undefined;
-	    _again = false;
-	    if (object === null) object = Function.prototype;
-	
-	    var desc = _Object$getOwnPropertyDescriptor(object, property);
-	
-	    if (desc === undefined) {
-	      var parent = Object.getPrototypeOf(object);
-	
-	      if (parent === null) {
-	        return undefined;
-	      } else {
-	        _x = parent;
-	        _x2 = property;
-	        _x3 = receiver;
-	        _again = true;
-	        continue _function;
-	      }
-	    } else if ("value" in desc) {
-	      return desc.value;
-	    } else {
-	      var getter = desc.get;
-	
-	      if (getter === undefined) {
-	        return undefined;
-	      }
-	
-	      return getter.call(receiver);
-	    }
-	  }
-	};
-	
-	exports.__esModule = true;
-
-/***/ },
-/* 159 */
-/*!***********************************************************************!*\
-  !*** ./~/babel-runtime/core-js/object/get-own-property-descriptor.js ***!
-  \***********************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(/*! core-js/library/fn/object/get-own-property-descriptor */ 160), __esModule: true };
-
-/***/ },
-/* 160 */
-/*!************************************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/fn/object/get-own-property-descriptor.js ***!
-  \************************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var $ = __webpack_require__(/*! ../../modules/$ */ 161);
-	__webpack_require__(/*! ../../modules/es6.object.get-own-property-descriptor */ 162);
-	module.exports = function getOwnPropertyDescriptor(it, key){
-	  return $.getDesc(it, key);
-	};
-
-/***/ },
-/* 161 */
-/*!********************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.js ***!
-  \********************************************************/
-/***/ function(module, exports) {
-
-	var $Object = Object;
-	module.exports = {
-	  create:     $Object.create,
-	  getProto:   $Object.getPrototypeOf,
-	  isEnum:     {}.propertyIsEnumerable,
-	  getDesc:    $Object.getOwnPropertyDescriptor,
-	  setDesc:    $Object.defineProperty,
-	  setDescs:   $Object.defineProperties,
-	  getKeys:    $Object.keys,
-	  getNames:   $Object.getOwnPropertyNames,
-	  getSymbols: $Object.getOwnPropertySymbols,
-	  each:       [].forEach
-	};
-
-/***/ },
-/* 162 */
-/*!*********************************************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/es6.object.get-own-property-descriptor.js ***!
-  \*********************************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-	var toIObject = __webpack_require__(/*! ./$.to-iobject */ 163);
-	
-	__webpack_require__(/*! ./$.object-sap */ 167)('getOwnPropertyDescriptor', function($getOwnPropertyDescriptor){
-	  return function getOwnPropertyDescriptor(it, key){
-	    return $getOwnPropertyDescriptor(toIObject(it), key);
-	  };
-	});
-
-/***/ },
-/* 163 */
-/*!*******************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.to-iobject.js ***!
-  \*******************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(/*! ./$.iobject */ 164)
-	  , defined = __webpack_require__(/*! ./$.defined */ 166);
-	module.exports = function(it){
-	  return IObject(defined(it));
-	};
-
-/***/ },
-/* 164 */
-/*!****************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.iobject.js ***!
-  \****************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	// indexed object, fallback for non-array-like ES3 strings
-	var cof = __webpack_require__(/*! ./$.cof */ 165);
-	module.exports = 0 in Object('z') ? Object : function(it){
-	  return cof(it) == 'String' ? it.split('') : Object(it);
-	};
-
-/***/ },
-/* 165 */
-/*!************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.cof.js ***!
-  \************************************************************/
-/***/ function(module, exports) {
-
-	var toString = {}.toString;
-	
-	module.exports = function(it){
-	  return toString.call(it).slice(8, -1);
-	};
-
-/***/ },
-/* 166 */
-/*!****************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.defined.js ***!
-  \****************************************************************/
-/***/ function(module, exports) {
-
-	// 7.2.1 RequireObjectCoercible(argument)
-	module.exports = function(it){
-	  if(it == undefined)throw TypeError("Can't call method on  " + it);
-	  return it;
-	};
-
-/***/ },
-/* 167 */
-/*!*******************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.object-sap.js ***!
-  \*******************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	// most Object methods by ES6 should accept primitives
-	module.exports = function(KEY, exec){
-	  var $def = __webpack_require__(/*! ./$.def */ 168)
-	    , fn   = (__webpack_require__(/*! ./$.core */ 170).Object || {})[KEY] || Object[KEY]
-	    , exp  = {};
-	  exp[KEY] = exec(fn);
-	  $def($def.S + $def.F * __webpack_require__(/*! ./$.fails */ 171)(function(){ fn(1); }), 'Object', exp);
-	};
-
-/***/ },
-/* 168 */
-/*!************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.def.js ***!
-  \************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var global    = __webpack_require__(/*! ./$.global */ 169)
-	  , core      = __webpack_require__(/*! ./$.core */ 170)
-	  , PROTOTYPE = 'prototype';
-	var ctx = function(fn, that){
-	  return function(){
-	    return fn.apply(that, arguments);
-	  };
-	};
-	var $def = function(type, name, source){
-	  var key, own, out, exp
-	    , isGlobal = type & $def.G
-	    , isProto  = type & $def.P
-	    , target   = isGlobal ? global : type & $def.S
-	        ? global[name] : (global[name] || {})[PROTOTYPE]
-	    , exports  = isGlobal ? core : core[name] || (core[name] = {});
-	  if(isGlobal)source = name;
-	  for(key in source){
-	    // contains in native
-	    own = !(type & $def.F) && target && key in target;
-	    if(own && key in exports)continue;
-	    // export native or passed
-	    out = own ? target[key] : source[key];
-	    // prevent global pollution for namespaces
-	    if(isGlobal && typeof target[key] != 'function')exp = source[key];
-	    // bind timers to global for call from export context
-	    else if(type & $def.B && own)exp = ctx(out, global);
-	    // wrap global constructors for prevent change them in library
-	    else if(type & $def.W && target[key] == out)!function(C){
-	      exp = function(param){
-	        return this instanceof C ? new C(param) : C(param);
-	      };
-	      exp[PROTOTYPE] = C[PROTOTYPE];
-	    }(out);
-	    else exp = isProto && typeof out == 'function' ? ctx(Function.call, out) : out;
-	    // export
-	    exports[key] = exp;
-	    if(isProto)(exports[PROTOTYPE] || (exports[PROTOTYPE] = {}))[key] = out;
-	  }
-	};
-	// type bitmap
-	$def.F = 1;  // forced
-	$def.G = 2;  // global
-	$def.S = 4;  // static
-	$def.P = 8;  // proto
-	$def.B = 16; // bind
-	$def.W = 32; // wrap
-	module.exports = $def;
-
-/***/ },
-/* 169 */
-/*!***************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.global.js ***!
-  \***************************************************************/
-/***/ function(module, exports) {
-
-	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-	var UNDEFINED = 'undefined';
-	var global = module.exports = typeof window != UNDEFINED && window.Math == Math
-	  ? window : typeof self != UNDEFINED && self.Math == Math ? self : Function('return this')();
-	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
-
-/***/ },
-/* 170 */
-/*!*************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.core.js ***!
-  \*************************************************************/
-/***/ function(module, exports) {
-
-	var core = module.exports = {version: '1.2.1'};
-	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-
-/***/ },
-/* 171 */
-/*!**************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.fails.js ***!
-  \**************************************************************/
-/***/ function(module, exports) {
-
-	module.exports = function(exec){
-	  try {
-	    return !!exec();
-	  } catch(e){
-	    return true;
-	  }
-	};
-
-/***/ },
-/* 172 */
-/*!*********************************************!*\
-  !*** ./~/babel-runtime/helpers/inherits.js ***!
-  \*********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _Object$create = __webpack_require__(/*! babel-runtime/core-js/object/create */ 173)["default"];
-	
-	var _Object$setPrototypeOf = __webpack_require__(/*! babel-runtime/core-js/object/set-prototype-of */ 175)["default"];
-	
-	exports["default"] = function (subClass, superClass) {
-	  if (typeof superClass !== "function" && superClass !== null) {
-	    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-	  }
-	
-	  subClass.prototype = _Object$create(superClass && superClass.prototype, {
-	    constructor: {
-	      value: subClass,
-	      enumerable: false,
-	      writable: true,
-	      configurable: true
-	    }
-	  });
-	  if (superClass) _Object$setPrototypeOf ? _Object$setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	};
-	
-	exports.__esModule = true;
-
-/***/ },
-/* 173 */
-/*!**************************************************!*\
-  !*** ./~/babel-runtime/core-js/object/create.js ***!
-  \**************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(/*! core-js/library/fn/object/create */ 174), __esModule: true };
-
-/***/ },
-/* 174 */
-/*!***************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/fn/object/create.js ***!
-  \***************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var $ = __webpack_require__(/*! ../../modules/$ */ 161);
-	module.exports = function create(P, D){
-	  return $.create(P, D);
-	};
-
-/***/ },
-/* 175 */
-/*!************************************************************!*\
-  !*** ./~/babel-runtime/core-js/object/set-prototype-of.js ***!
-  \************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(/*! core-js/library/fn/object/set-prototype-of */ 176), __esModule: true };
-
-/***/ },
-/* 176 */
-/*!*************************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/fn/object/set-prototype-of.js ***!
-  \*************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(/*! ../../modules/es6.object.set-prototype-of */ 177);
-	module.exports = __webpack_require__(/*! ../../modules/$.core */ 170).Object.setPrototypeOf;
-
-/***/ },
-/* 177 */
-/*!**********************************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/es6.object.set-prototype-of.js ***!
-  \**********************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.3.19 Object.setPrototypeOf(O, proto)
-	var $def = __webpack_require__(/*! ./$.def */ 168);
-	$def($def.S, 'Object', {setPrototypeOf: __webpack_require__(/*! ./$.set-proto */ 178).set});
-
-/***/ },
-/* 178 */
-/*!******************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.set-proto.js ***!
-  \******************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	// Works with __proto__ only. Old v8 can't work with null proto objects.
-	/* eslint-disable no-proto */
-	var getDesc  = __webpack_require__(/*! ./$ */ 161).getDesc
-	  , isObject = __webpack_require__(/*! ./$.is-object */ 179)
-	  , anObject = __webpack_require__(/*! ./$.an-object */ 180);
-	var check = function(O, proto){
-	  anObject(O);
-	  if(!isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
-	};
-	module.exports = {
-	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line no-proto
-	    function(test, buggy, set){
-	      try {
-	        set = __webpack_require__(/*! ./$.ctx */ 181)(Function.call, getDesc(Object.prototype, '__proto__').set, 2);
-	        set(test, []);
-	        buggy = !(test instanceof Array);
-	      } catch(e){ buggy = true; }
-	      return function setPrototypeOf(O, proto){
-	        check(O, proto);
-	        if(buggy)O.__proto__ = proto;
-	        else set(O, proto);
-	        return O;
-	      };
-	    }({}, false) : undefined),
-	  check: check
-	};
-
-/***/ },
-/* 179 */
-/*!******************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.is-object.js ***!
-  \******************************************************************/
-/***/ function(module, exports) {
-
-	module.exports = function(it){
-	  return typeof it === 'object' ? it !== null : typeof it === 'function';
-	};
-
-/***/ },
-/* 180 */
-/*!******************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.an-object.js ***!
-  \******************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(/*! ./$.is-object */ 179);
-	module.exports = function(it){
-	  if(!isObject(it))throw TypeError(it + ' is not an object!');
-	  return it;
-	};
-
-/***/ },
-/* 181 */
-/*!************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.ctx.js ***!
-  \************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	// optional / simple context binding
-	var aFunction = __webpack_require__(/*! ./$.a-function */ 182);
-	module.exports = function(fn, that, length){
-	  aFunction(fn);
-	  if(that === undefined)return fn;
-	  switch(length){
-	    case 1: return function(a){
-	      return fn.call(that, a);
-	    };
-	    case 2: return function(a, b){
-	      return fn.call(that, a, b);
-	    };
-	    case 3: return function(a, b, c){
-	      return fn.call(that, a, b, c);
-	    };
-	  }
-	  return function(/* ...args */){
-	    return fn.apply(that, arguments);
-	  };
-	};
-
-/***/ },
-/* 182 */
-/*!*******************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/modules/$.a-function.js ***!
-  \*******************************************************************/
-/***/ function(module, exports) {
-
-	module.exports = function(it){
-	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
-	  return it;
-	};
-
-/***/ },
-/* 183 */
-/*!*************************************************!*\
-  !*** ./~/babel-runtime/helpers/create-class.js ***!
-  \*************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _Object$defineProperty = __webpack_require__(/*! babel-runtime/core-js/object/define-property */ 184)["default"];
-	
-	exports["default"] = (function () {
-	  function defineProperties(target, props) {
-	    for (var i = 0; i < props.length; i++) {
-	      var descriptor = props[i];
-	      descriptor.enumerable = descriptor.enumerable || false;
-	      descriptor.configurable = true;
-	      if ("value" in descriptor) descriptor.writable = true;
-	
-	      _Object$defineProperty(target, descriptor.key, descriptor);
-	    }
-	  }
-	
-	  return function (Constructor, protoProps, staticProps) {
-	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-	    if (staticProps) defineProperties(Constructor, staticProps);
-	    return Constructor;
-	  };
-	})();
-	
-	exports.__esModule = true;
-
-/***/ },
-/* 184 */
-/*!***********************************************************!*\
-  !*** ./~/babel-runtime/core-js/object/define-property.js ***!
-  \***********************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(/*! core-js/library/fn/object/define-property */ 185), __esModule: true };
-
-/***/ },
-/* 185 */
-/*!************************************************************************!*\
-  !*** ./~/babel-runtime/~/core-js/library/fn/object/define-property.js ***!
-  \************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var $ = __webpack_require__(/*! ../../modules/$ */ 161);
-	module.exports = function defineProperty(it, key, desc){
-	  return $.setDesc(it, key, desc);
-	};
-
-/***/ },
-/* 186 */
-/*!*****************************************************!*\
-  !*** ./~/babel-runtime/helpers/class-call-check.js ***!
-  \*****************************************************/
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	exports["default"] = function (instance, Constructor) {
-	  if (!(instance instanceof Constructor)) {
-	    throw new TypeError("Cannot call a class as a function");
-	  }
-	};
-	
-	exports.__esModule = true;
-
-/***/ },
-/* 187 */
-/*!************************************************************!*\
-  !*** ./~/babel-runtime/helpers/interop-require-default.js ***!
-  \************************************************************/
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	exports["default"] = function (obj) {
-	  return obj && obj.__esModule ? obj : {
-	    "default": obj
-	  };
-	};
-	
-	exports.__esModule = true;
-
-/***/ },
-/* 188 */
+/* 191 */
 /*!****************************!*\
   !*** ./~/events/events.js ***!
   \****************************/
@@ -21876,7 +22033,7 @@
 
 
 /***/ },
-/* 189 */
+/* 192 */
 /*!*******************************!*\
   !*** ./js/ChatExampleData.js ***!
   \*******************************/
@@ -21955,7 +22112,7 @@
 	};
 
 /***/ },
-/* 190 */
+/* 193 */
 /*!*************************************!*\
   !*** ./js/utils/ChatWebAPIUtils.js ***!
   \*************************************/
@@ -21979,15 +22136,15 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _immutable = __webpack_require__(/*! immutable */ 191);
+	var _immutable = __webpack_require__(/*! immutable */ 194);
 	
 	var Immutable = _interopRequireWildcard(_immutable);
 	
-	var _ChatMessageUtils = __webpack_require__(/*! ./ChatMessageUtils */ 192);
+	var _ChatMessageUtils = __webpack_require__(/*! ./ChatMessageUtils */ 195);
 	
 	var ChatMessageUtils = _interopRequireWildcard(_ChatMessageUtils);
 	
-	var _Message = __webpack_require__(/*! ../Message */ 193);
+	var _Message = __webpack_require__(/*! ../Message */ 196);
 	
 	var _Message2 = _interopRequireDefault(_Message);
 	
@@ -22043,7 +22200,7 @@
 	};
 
 /***/ },
-/* 191 */
+/* 194 */
 /*!***************************************!*\
   !*** ./~/immutable/dist/immutable.js ***!
   \***************************************/
@@ -27011,7 +27168,7 @@
 	}));
 
 /***/ },
-/* 192 */
+/* 195 */
 /*!**************************************!*\
   !*** ./js/utils/ChatMessageUtils.js ***!
   \**************************************/
@@ -27060,7 +27217,7 @@
 	};
 
 /***/ },
-/* 193 */
+/* 196 */
 /*!***********************!*\
   !*** ./js/Message.js ***!
   \***********************/
@@ -27074,7 +27231,7 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _immutable = __webpack_require__(/*! immutable */ 191);
+	var _immutable = __webpack_require__(/*! immutable */ 194);
 	
 	var Immutable = _interopRequireWildcard(_immutable);
 	
@@ -27095,7 +27252,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 194 */
+/* 197 */
 /*!****************************!*\
   !*** ./js/ChatAppState.js ***!
   \****************************/
@@ -27119,15 +27276,15 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _immutable = __webpack_require__(/*! immutable */ 191);
+	var _immutable = __webpack_require__(/*! immutable */ 194);
 	
 	var Immutable = _interopRequireWildcard(_immutable);
 	
-	var _Message = __webpack_require__(/*! ./Message */ 193);
+	var _Message = __webpack_require__(/*! ./Message */ 196);
 	
 	var _Message2 = _interopRequireDefault(_Message);
 	
-	var _Thread = __webpack_require__(/*! ./Thread */ 195);
+	var _Thread = __webpack_require__(/*! ./Thread */ 198);
 	
 	var _Thread2 = _interopRequireDefault(_Thread);
 	
@@ -27229,7 +27386,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 195 */
+/* 198 */
 /*!**********************!*\
   !*** ./js/Thread.js ***!
   \**********************/
@@ -27253,11 +27410,11 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _immutable = __webpack_require__(/*! immutable */ 191);
+	var _immutable = __webpack_require__(/*! immutable */ 194);
 	
 	var Immutable = _interopRequireWildcard(_immutable);
 	
-	var _Message = __webpack_require__(/*! ./Message */ 193);
+	var _Message = __webpack_require__(/*! ./Message */ 196);
 	
 	var _Message2 = _interopRequireDefault(_Message);
 	
@@ -27343,7 +27500,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 196 */
+/* 199 */
 /*!****************************************!*\
   !*** ./js/components/ChatApp.react.js ***!
   \****************************************/
@@ -27363,62 +27520,31 @@
 	
 	'use strict';
 	
-	var MessageSection = __webpack_require__(/*! ./MessageSection.react */ 197);
+	var MessageSection = __webpack_require__(/*! ./MessageSection.react */ 200);
 	var React = __webpack_require__(/*! react */ 1);
-	var ThreadSection = __webpack_require__(/*! ./ThreadSection.react */ 201);
+	var ThreadSection = __webpack_require__(/*! ./ThreadSection.react */ 204);
 	
 	/**
 	 * Top level chat app.
 	 *
-	 * Differs from original Flux-based version because we listen to the
-	 * appStateRef here and pass along current state as props to
-	 * ThreadSection and MessageSection.
+	 * Differs from Flux version by taking all app state from appState property
+	 *
 	 */
-	function getAppState(stateRef) {
-	  var appState = stateRef.getValue();
-	  return {
-	    threads: appState.getAllChrono(),
-	    currentThreadID: appState.currentThreadID,
-	    unreadCount: appState.unreadCount,
-	    currentThread: appState.getCurrentThread()
-	  };
-	}
-	
 	var ChatApp = React.createClass({
 	  displayName: 'ChatApp',
 	
-	  getInitialState: function getInitialState() {
-	    return getAppState(this.props.stateRef);
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    var stateRef = this.props.stateRef;
-	    stateRef.on("change", this._onChange);
-	  },
-	
-	  componentWillUnmount: function componentWillUnmount() {
-	    var stateRef = this.props.stateRef;
-	    stateRef.removeListener("change", this._onChange);
-	  },
-	
-	  /**
-	   * Event handler for 'change' events coming from the state
-	   */
-	  _onChange: function _onChange() {
-	    this.setState(getAppState(this.props.stateRef));
-	  },
-	
 	  render: function render() {
+	    var appState = this.props.appState;
 	    return React.createElement(
 	      'div',
 	      { className: 'chatapp' },
 	      React.createElement(ThreadSection, {
-	        threads: this.state.threads,
-	        currentThreadID: this.state.currentThreadID,
-	        unreadCount: this.state.unreadCount,
+	        threads: appState.getAllChrono(),
+	        currentThreadID: appState.currentThreadID,
+	        unreadCount: appState.unreadCount,
 	        stateRefUpdater: this.props.stateRefUpdater }),
 	      React.createElement(MessageSection, {
-	        thread: this.state.currentThread,
+	        thread: appState.getCurrentThread(),
 	        stateRefUpdater: this.props.stateRefUpdater })
 	    );
 	  }
@@ -27428,7 +27554,7 @@
 	module.exports = ChatApp;
 
 /***/ },
-/* 197 */
+/* 200 */
 /*!***********************************************!*\
   !*** ./js/components/MessageSection.react.js ***!
   \***********************************************/
@@ -27448,8 +27574,8 @@
 	
 	'use strict';
 	
-	var MessageComposer = __webpack_require__(/*! ./MessageComposer.react */ 198);
-	var MessageListItem = __webpack_require__(/*! ./MessageListItem.react */ 200);
+	var MessageComposer = __webpack_require__(/*! ./MessageComposer.react */ 201);
+	var MessageListItem = __webpack_require__(/*! ./MessageListItem.react */ 203);
 	var React = __webpack_require__(/*! react */ 1);
 	
 	function getMessageListItem(message) {
@@ -27503,7 +27629,7 @@
 	module.exports = MessageSection;
 
 /***/ },
-/* 198 */
+/* 201 */
 /*!************************************************!*\
   !*** ./js/components/MessageComposer.react.js ***!
   \************************************************/
@@ -27523,7 +27649,7 @@
 	
 	'use strict';
 	
-	var ChatActions = __webpack_require__(/*! ../ChatActions */ 199);
+	var ChatActions = __webpack_require__(/*! ../ChatActions */ 202);
 	var React = __webpack_require__(/*! react */ 1);
 	
 	var ENTER_KEY_CODE = 13;
@@ -27569,7 +27695,7 @@
 	module.exports = MessageComposer;
 
 /***/ },
-/* 199 */
+/* 202 */
 /*!***************************!*\
   !*** ./js/ChatActions.js ***!
   \***************************/
@@ -27593,15 +27719,15 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _utilsChatWebAPIUtils = __webpack_require__(/*! ./utils/ChatWebAPIUtils */ 190);
+	var _utilsChatWebAPIUtils = __webpack_require__(/*! ./utils/ChatWebAPIUtils */ 193);
 	
 	var ChatWebAPIUtils = _interopRequireWildcard(_utilsChatWebAPIUtils);
 	
-	var _utilsChatMessageUtils = __webpack_require__(/*! ./utils/ChatMessageUtils */ 192);
+	var _utilsChatMessageUtils = __webpack_require__(/*! ./utils/ChatMessageUtils */ 195);
 	
 	var ChatMessageUtils = _interopRequireWildcard(_utilsChatMessageUtils);
 	
-	var _Message = __webpack_require__(/*! ./Message */ 193);
+	var _Message = __webpack_require__(/*! ./Message */ 196);
 	
 	var _Message2 = _interopRequireDefault(_Message);
 	
@@ -27625,7 +27751,7 @@
 	}
 
 /***/ },
-/* 200 */
+/* 203 */
 /*!************************************************!*\
   !*** ./js/components/MessageListItem.react.js ***!
   \************************************************/
@@ -27684,7 +27810,7 @@
 	module.exports = MessageListItem;
 
 /***/ },
-/* 201 */
+/* 204 */
 /*!**********************************************!*\
   !*** ./js/components/ThreadSection.react.js ***!
   \**********************************************/
@@ -27705,7 +27831,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(/*! react */ 1);
-	var ThreadListItem = __webpack_require__(/*! ../components/ThreadListItem.react */ 202);
+	var ThreadListItem = __webpack_require__(/*! ../components/ThreadListItem.react */ 205);
 	
 	/**
 	 * Display a summary of all threads
@@ -27750,7 +27876,7 @@
 	module.exports = ThreadSection;
 
 /***/ },
-/* 202 */
+/* 205 */
 /*!***********************************************!*\
   !*** ./js/components/ThreadListItem.react.js ***!
   \***********************************************/
@@ -27771,8 +27897,8 @@
 	'use strict';
 	
 	var React = __webpack_require__(/*! react */ 1);
-	var classNames = __webpack_require__(/*! classnames */ 203);
-	var ChatActions = __webpack_require__(/*! ../ChatActions */ 199);
+	var classNames = __webpack_require__(/*! classnames */ 206);
+	var ChatActions = __webpack_require__(/*! ../ChatActions */ 202);
 	
 	var ReactPropTypes = React.PropTypes;
 	
@@ -27822,7 +27948,7 @@
 	module.exports = ThreadListItem;
 
 /***/ },
-/* 203 */
+/* 206 */
 /*!*******************************!*\
   !*** ./~/classnames/index.js ***!
   \*******************************/

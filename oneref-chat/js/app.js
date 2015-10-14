@@ -15,9 +15,7 @@ const baseState = baseMessages.reduce((ts,msg) => ts.addMessage(msg),new ChatApp
 const initialState = baseState.markRead(baseState.currentThreadID);
 const stateRef = new OneRef.Ref(initialState);
 
-const stateRefUpdater = OneRef.refUpdater(stateRef);
-
 React.render(
-  <ChatApp stateRef={stateRef} stateRefUpdater={stateRefUpdater} />,
+  <OneRef.AppContainer appClass={ChatApp} stateRef={stateRef} />,
   document.getElementById('react')
 );
