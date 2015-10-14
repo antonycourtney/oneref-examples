@@ -27164,35 +27164,69 @@
 	 */
 	'use strict';
 	
-	var Footer = __webpack_require__(/*! ./Footer.react */ 196);
-	var Header = __webpack_require__(/*! ./Header.react */ 198);
-	var MainSection = __webpack_require__(/*! ./MainSection.react */ 200);
-	var React = __webpack_require__(/*! react */ 1);
-	
-	var TodoApp = React.createClass({
-	  displayName: 'TodoApp',
-	
-	  /**
-	   * @return {object}
-	   */
-	  render: function render() {
-	    var appState = this.props.appState;
-	    var allTodos = appState.getAll();
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(Header, { stateRefUpdater: this.props.stateRefUpdater }),
-	      React.createElement(MainSection, {
-	        allTodos: allTodos,
-	        areAllComplete: appState.areAllComplete(),
-	        stateRefUpdater: this.props.stateRefUpdater
-	      }),
-	      React.createElement(Footer, { allTodos: allTodos, stateRefUpdater: this.props.stateRefUpdater })
-	    );
-	  }
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
 	});
 	
-	module.exports = TodoApp;
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _FooterReact = __webpack_require__(/*! ./Footer.react */ 196);
+	
+	var _FooterReact2 = _interopRequireDefault(_FooterReact);
+	
+	var _HeaderReact = __webpack_require__(/*! ./Header.react */ 198);
+	
+	var _HeaderReact2 = _interopRequireDefault(_HeaderReact);
+	
+	var _MainSectionReact = __webpack_require__(/*! ./MainSection.react */ 200);
+	
+	var _MainSectionReact2 = _interopRequireDefault(_MainSectionReact);
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var TodoApp = (function (_React$Component) {
+	  _inherits(TodoApp, _React$Component);
+	
+	  function TodoApp() {
+	    _classCallCheck(this, TodoApp);
+	
+	    _get(Object.getPrototypeOf(TodoApp.prototype), 'constructor', this).apply(this, arguments);
+	  }
+	
+	  _createClass(TodoApp, [{
+	    key: 'render',
+	    value: function render() {
+	      var appState = this.props.appState;
+	      var allTodos = appState.getAll();
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        _react2['default'].createElement(_HeaderReact2['default'], { stateRefUpdater: this.props.stateRefUpdater }),
+	        _react2['default'].createElement(_MainSectionReact2['default'], {
+	          allTodos: allTodos,
+	          areAllComplete: appState.areAllComplete(),
+	          stateRefUpdater: this.props.stateRefUpdater
+	        }),
+	        _react2['default'].createElement(_FooterReact2['default'], { allTodos: allTodos, stateRefUpdater: this.props.stateRefUpdater })
+	      );
+	    }
+	  }]);
+	
+	  return TodoApp;
+	})(_react2['default'].Component);
+	
+	exports['default'] = TodoApp;
+	module.exports = exports['default'];
 
 /***/ },
 /* 196 */
@@ -27308,6 +27342,7 @@
 	exports.updateText = updateText;
 	exports.destroy = destroy;
 	exports.destroyCompleted = destroyCompleted;
+	exports.toggleCompleteAll = toggleCompleteAll;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -27351,6 +27386,20 @@
 	    return completedIds.reduce(function (s, id) {
 	      return s.removeItem(id);
 	    }, state);
+	  });
+	}
+	
+	function toggleCompleteAll(updater) {
+	  updater(function (state) {
+	    var targetVal = !state.areAllComplete();
+	    // We'll set completed state of all items to targetVal:
+	    var updItems = state.getAll().map(function (item) {
+	      return item.set('complete', targetVal);
+	    });
+	    var nextState = updItems.reduce(function (st, item) {
+	      return st.addItem(item);
+	    }, state);
+	    return nextState;
 	  });
 	}
 
@@ -27525,6 +27574,7 @@
 	var React = __webpack_require__(/*! react */ 1);
 	var ReactPropTypes = React.PropTypes;
 	var TodoItem = __webpack_require__(/*! ./TodoItem.react */ 201);
+	var TodoActions = __webpack_require__(/*! ../todoActions */ 197);
 	
 	var MainSection = React.createClass({
 	  displayName: 'MainSection',
@@ -27578,8 +27628,7 @@
 	   * Event handler to mark all TODOs as complete
 	   */
 	  _onToggleCompleteAll: function _onToggleCompleteAll() {
-	    // TODO
-	    // TodoActions.toggleCompleteAll();
+	    TodoActions.toggleCompleteAll(this.props.stateRefUpdater);
 	  }
 	
 	});

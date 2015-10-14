@@ -10,6 +10,7 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var TodoItem = require('./TodoItem.react');
+var TodoActions = require('../todoActions');
 
 var MainSection = React.createClass({
 
@@ -54,8 +55,7 @@ var MainSection = React.createClass({
    * Event handler to mark all TODOs as complete
    */
   _onToggleCompleteAll: function() {
-    // TODO 
-    // TodoActions.toggleCompleteAll();
+    TodoActions.toggleCompleteAll(this.props.stateRefUpdater);
   }
 
 });

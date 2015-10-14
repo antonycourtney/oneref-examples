@@ -32,3 +32,13 @@ export function destroyCompleted(updater) {
     return completedIds.reduce((s,id) => s.removeItem(id),state);
   });
 }
+
+export function toggleCompleteAll(updater) {
+  updater((state) => {
+    const targetVal = !(state.areAllComplete());  
+    // We'll set completed state of all items to targetVal:
+    const updItems = state.getAll().map((item) => item.set('complete', targetVal));
+    const nextState = updItems.reduce((st,item) => st.addItem(item), state); 
+    return nextState;
+  });
+}

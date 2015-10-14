@@ -12,16 +12,13 @@
  * as a property.
  * 
  */
-var Footer = require('./Footer.react');
-var Header = require('./Header.react');
-var MainSection = require('./MainSection.react');
-var React = require('react');
+import Footer from './Footer.react';
+import Header from './Header.react';
+import MainSection from './MainSection.react';
+import React from 'react';
 
-var TodoApp = React.createClass({
-  /**
-   * @return {object}
-   */
-  render: function() {
+export default class TodoApp extends React.Component {
+  render() {
     const appState = this.props.appState;
     const allTodos = appState.getAll();
     return (
@@ -35,7 +32,5 @@ var TodoApp = React.createClass({
         <Footer allTodos={allTodos} stateRefUpdater={this.props.stateRefUpdater} />
       </div>
     );
-  },
-});
-
-module.exports = TodoApp;
+  }
+}
