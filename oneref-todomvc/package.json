@@ -8,7 +8,7 @@
     "immutable": "^3.7.5",
     "lodash": "^3.10.1",
     "object-assign": "^4.0.1",
-    "oneref": "^0.1.1",
+    "oneref": "^0.1.2",
     "react": "^0.13.3"
   },
   "devDependencies": {

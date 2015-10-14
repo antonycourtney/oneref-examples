@@ -5,7 +5,8 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-      todomvc: "./js/app.js"
+      todomvc: "./js/app.js",
+      viewTest: "./js/viewTest.js"
     },
     output: {
         path: "./build/",

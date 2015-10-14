@@ -17,19 +17,20 @@ var Header = require('./Header.react');
 var MainSection = require('./MainSection.react');
 var React = require('react');
 
-var TodoApp = React.createClass({
+var TodoListItem = React.createClass({
   /**
    * @return {object}
    */
   render: function() {
     const appState = this.props.appState;
     const allTodos = appState.getAll();
+    const areAllComplete = appState.areAllComplete();
     return (
       <div>
         <Header stateRefUpdater={this.props.stateRefUpdater} />
         <MainSection
           allTodos={allTodos}
-          areAllComplete={appState.areAllComplete()}
+          areAllComplete={areAllComplete}
           stateRefUpdater={this.props.stateRefUpdater}
         />
         <Footer allTodos={allTodos} stateRefUpdater={this.props.stateRefUpdater} />
@@ -38,4 +39,4 @@ var TodoApp = React.createClass({
   },
 });
 
-module.exports = TodoApp;
+module.exports = TodoListItem;
