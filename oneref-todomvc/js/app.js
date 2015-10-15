@@ -1,7 +1,7 @@
 'use strict';
 
-import * as React from 'react';
-import * as OneRef from 'oneref';
+import React from 'react';
+import OneRef from 'oneref';
 import TodoAppState from './todoAppState';
 import TodoApp from './components/TodoApp.react';
 
