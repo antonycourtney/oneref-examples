@@ -1,6 +1,7 @@
 'use strict';
 
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as OneRef from 'oneref';
 import * as ChatExampleData from './ChatExampleData';
 import * as ChatWebAPIUtils from './utils/ChatWebAPIUtils';
@@ -15,7 +16,7 @@ const baseState = baseMessages.reduce((ts,msg) => ts.addMessage(msg),new ChatApp
 const initialState = baseState.markRead(baseState.currentThreadID);
 const stateRef = new OneRef.Ref(initialState);
 
-React.render(
+ReactDOM.render(
   <OneRef.AppContainer appClass={ChatApp} stateRef={stateRef} />,
   document.getElementById('react')
 );

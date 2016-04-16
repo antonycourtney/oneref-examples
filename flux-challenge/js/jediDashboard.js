@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as Immutable from 'immutable';
 import DashboardApp from './components';
 import * as DT from './dashboardTypes';
@@ -20,7 +21,7 @@ ws.onmessage = function (event) {
 // start things off
 actions.requestSithInfo(true,3616,stateRefUpdater);
 
-React.render(
+ReactDOM.render(
   <DashboardApp stateRef={stateRef} refUpdater={stateRefUpdater} />,
   document.getElementById('app')
 );
