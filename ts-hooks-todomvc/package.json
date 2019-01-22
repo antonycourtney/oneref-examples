@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/classnames": "^2.2.7",
     "@types/jest": "23.3.13",
     "@types/node": "10.12.18",
     "@types/react": "16.7.20",
     "@types/react-dom": "16.0.11",
+    "classnames": "^2.2.6",
     "immutable": "^4.0.0-rc.12",
     "react": "^16.8.0-alpha.1",
     "react-dom": "^16.8.0-alpha.1",
