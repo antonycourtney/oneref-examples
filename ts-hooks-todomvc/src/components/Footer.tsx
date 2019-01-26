@@ -13,13 +13,17 @@ import TodoAppState from '../todoAppState';
 import * as actions from '../actions';
 import {StateSetter} from '../oneref';
 import {Seq} from 'immutable';
+import classNames from 'classnames';
+import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
 interface FooterProps {
   allTodos: Seq.Set<TodoItem>
+  nowShowing: string;
+  setNowShowing: (ns: string) => void;
   setState: StateSetter<TodoAppState>
 }
 
-const Footer = ({ allTodos, setState}: FooterProps) => {
+const Footer = ({ allTodos, nowShowing, setState, setNowShowing}: FooterProps) => {
   const total = allTodos.count();
 
   if (total === 0) {
@@ -37,22 +41,44 @@ const Footer = ({ allTodos, setState}: FooterProps) => {
   if (completed) {
     clearCompletedButton =
       <button
-        id="clear-completed"
+        className="clear-completed"
         onClick={(e) => setState(actions.clearCompleted)}>
         Clear completed ({completed})
       </button>;
   }
 
   return (
-    <footer id="footer">
-      <span id="todo-count">
-        <strong>
-          {itemsLeft}
-        </strong>
-        {itemsLeftPhrase}
-      </span>
-      {clearCompletedButton}
-    </footer>
+    <footer className="footer">
+    <span className="todo-count">
+      <strong>{itemsLeft}</strong> {itemsLeftPhrase}
+    </span>
+    <ul className="filters">
+      <li>
+        <a
+          onClick={() => setNowShowing(ALL_TODOS)}
+          className={classNames({selected: nowShowing === ALL_TODOS})}>
+            All
+        </a>
+      </li>
+      {' '}
+      <li>
+        <a
+          onClick={() => setNowShowing(ACTIVE_TODOS)}
+          className={classNames({selected: nowShowing === ACTIVE_TODOS})}>
+            Active
+        </a>
+      </li>
+      {' '}
+      <li>
+        <a
+          onClick={() => setNowShowing(COMPLETED_TODOS)}
+          className={classNames({selected: nowShowing === COMPLETED_TODOS})}>
+            Completed
+        </a>
+      </li>
+    </ul>
+    {clearCompletedButton}
+  </footer>
   );
 }
 

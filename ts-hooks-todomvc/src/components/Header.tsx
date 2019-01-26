@@ -26,10 +26,10 @@ const Header = ({ setState }: HeaderProps) => {
   }
 
   return (
-    <header id="header">
+    <header className="header">
       <h1>todos</h1>
       <TodoTextInput
-          id="new-todo"
+          className="new-todo"
           placeholder="What needs to be done?"
           onSave={onSave}
         />

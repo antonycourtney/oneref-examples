@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import TodoApp from './components/TodoApp';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<TodoApp />, document.getElementById('root'));
+ReactDOM.render(<TodoApp />, document.getElementsByClassName('todoapp')[0]);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

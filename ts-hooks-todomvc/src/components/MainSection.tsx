@@ -16,35 +16,40 @@ import {StateSetter} from '../oneref';
 import {Seq} from 'immutable';
 
 interface MainSectionProps {
-  allTodos: Seq.Set<TodoItem>
+  todos: Seq.Set<TodoItem>
   areAllComplete: boolean
   setState: StateSetter<TodoAppState>
 }
 
-const MainSection = ({allTodos, areAllComplete, setState}: MainSectionProps) => {
+const MainSection = ({todos, areAllComplete, setState}: MainSectionProps) => {
   // This section should be hidden by default
   // and shown when there are todos.
-  if (allTodos.count() < 1) {
+  if (todos.count() < 1) {
     return null;
   }
 
-  const allTodosArr = allTodos.toArray();
-  var todos = [];
+  const todosJS = todos.toJS();
+  const todosArr = todos.toArray();
 
-  for (var key in allTodosArr) {
-    todos.push(<TodoItemEditor key={key} todo={allTodosArr[key]} setState={setState} />);
+  console.log({ todosJS, todosArr });
+
+  let itemEditors = [];
+
+  for (var key in todosArr) {
+    itemEditors.push(<TodoItemEditor key={key} todo={todosArr[key]} setState={setState} />);
   }
 
   return (
-    <section id="main">
+    <section className="main">
       <input
         id="toggle-all"
+        className="toggle-all"
         type="checkbox"
         onChange={() => setState(actions.toggleCompleteAll)}
         checked={areAllComplete}
       />
       <label htmlFor="toggle-all">Mark all as complete</label>
-      <ul id="todo-list">{todos}</ul>
+      <ul className="todo-list">{itemEditors}</ul>
     </section>
   );
 
