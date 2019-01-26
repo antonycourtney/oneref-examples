@@ -1,12 +1,14 @@
 import React from 'react';
+import * as oneref from './oneref';
 import ReactDOM from 'react-dom';
-// import './index.css';
-import TodoApp from './components/TodoApp';
-import * as serviceWorker from './serviceWorker';
+import TodoListEditor from './components/TodoListEditor';
+import TodoAppState from './todoAppState';
 
-ReactDOM.render(<TodoApp />, document.getElementsByClassName('todoapp')[0]);
+import 'todomvc-common/base.css'
+import 'todomvc-app-css/index.css'
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const initialAppState = new TodoAppState();
+
+const MyApp = oneref.withOneRef<TodoAppState, {}>(initialAppState, TodoListEditor);
+
+ReactDOM.render(<MyApp />, document.getElementsByClassName('todoapp')[0]);

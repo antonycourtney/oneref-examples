@@ -30,9 +30,6 @@ const MainSection = ({todos, areAllComplete, setState}: MainSectionProps) => {
 
   const todosJS = todos.toJS();
   const todosArr = todos.toArray();
-
-  console.log({ todosJS, todosArr });
-
   let itemEditors = [];
 
   for (var key in todosArr) {

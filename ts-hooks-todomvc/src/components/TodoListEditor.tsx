@@ -11,13 +11,10 @@ import Header from './Header';
 import MainSection from './MainSection';
 import React from 'react';
 import TodoAppState from '../todoAppState';
+import * as oneref from '../oneref';
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
 
-import 'todomvc-common/base.css'
-import 'todomvc-app-css/index.css'
 import TodoItem from '../todoItem';
-
-const initialAppState = new TodoAppState();
 
 const FILTERS_MAP = new Map<string, (item: TodoItem) => boolean>([
   [ ALL_TODOS, (item: TodoItem) => true ],
@@ -25,9 +22,9 @@ const FILTERS_MAP = new Map<string, (item: TodoItem) => boolean>([
   [ COMPLETED_TODOS, (item: TodoItem) => item.complete ]
 ]);
 
-const TodoApp = () => {
-  const [appState, setState] = React.useState(initialAppState);
+type TodoListEditorProps = {} & oneref.StateRefProps<TodoAppState>;
 
+const TodoListEditor: React.FunctionComponent<TodoListEditorProps> = ({appState, setState}: TodoListEditorProps) => {
   const [nowShowing, setNowShowing] = React.useState(ALL_TODOS);
 
   const allTodos = appState.getAll();
@@ -52,6 +49,4 @@ const TodoApp = () => {
   )
 }
 
-// TODO: split in to TodoList component and AppContainer that handles state initialization
-
-export default TodoApp;
+export default TodoListEditor;
