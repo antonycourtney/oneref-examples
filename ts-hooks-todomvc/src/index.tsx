@@ -9,6 +9,6 @@ import 'todomvc-app-css/index.css'
 
 const initialAppState = new TodoAppState();
 
-const MyApp = oneref.withOneRef<TodoAppState, {}>(initialAppState, TodoListEditor);
+const TodoApp = oneref.appContainer<TodoAppState, {}>(initialAppState, TodoListEditor);
 
-ReactDOM.render(<MyApp />, document.getElementsByClassName('todoapp')[0]);
+ReactDOM.render(<TodoApp />, document.getElementsByClassName('todoapp')[0]);

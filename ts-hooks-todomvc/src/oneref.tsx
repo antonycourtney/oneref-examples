@@ -14,7 +14,11 @@ export interface StateRefProps<S> {
     setState: StateSetter<S>  
 }
 
-export const withOneRef = <AS extends {}, P extends {}>( s0: AS, Comp: React.ComponentType<P & StateRefProps<AS>>): React.FunctionComponent<P> => props => {
+/*
+ * A higher-order component that holds the single mutable ref cell for top-level app state
+ *
+ */
+export const appContainer = <AS extends {}, P extends {}>( s0: AS, Comp: React.ComponentType<P & StateRefProps<AS>>): React.FunctionComponent<P> => props => {
     const [appState, setState] = React.useState(s0);
 
     return (
