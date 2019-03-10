@@ -1,0 +1,10 @@
+import TodoItem from './todoItem';
+import TodoAppState from './todoAppState';
+declare type StateTransformer<T> = (s: T) => T;
+export declare const create: (text: string) => StateTransformer<TodoAppState>;
+export declare const clearCompleted: StateTransformer<TodoAppState>;
+export declare const updateText: (item: TodoItem, text: string) => StateTransformer<TodoAppState>;
+export declare const toggleComplete: (item: TodoItem) => StateTransformer<TodoAppState>;
+export declare const toggleCompleteAll: StateTransformer<TodoAppState>;
+export declare const destroy: (id: string) => StateTransformer<TodoAppState>;
+export {};
