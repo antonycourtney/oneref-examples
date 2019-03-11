@@ -8,7 +8,11 @@
         "@types/node": "11.9.0",
         "classnames": "^2.2.6",
         "immutable": "^4.0.0-rc.12",
-        "oneref": "1.0.0",
+        "oneref": "^0.4.0",
+        "@types/react": "^16.8.7",
+        "@types/react-dom": "^16.8.2",
+        "react": "^16.8.4",
+        "react-dom": "^16.8.4",
         "react-scripts": "2.1.5"
     },
     "scripts": {
@@ -28,6 +32,7 @@
         "not op_mini all"
     ],
     "devDependencies": {
-        "prettier": "1.16.4"
+        "prettier": "1.16.4",
+        "typescript": "^3.3.3333"
     }
 }
