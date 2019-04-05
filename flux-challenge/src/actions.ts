@@ -71,9 +71,7 @@ export function requestSithInfo(
 
     // fill in entry at pos indicating request for the given sith id,
     // and adding request to pending requestsById
-    update<DashboardAppState>(stateRef, st =>
-        st.addPendingRequest(append, sithId, controller)
-    );
+    update(stateRef, st => st.addPendingRequest(append, sithId, controller));
     // And spawn the async fetch request; note that we don't await the result
     fetchSithInfo(sithId, signal, stateRef);
 }
