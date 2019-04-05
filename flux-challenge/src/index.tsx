@@ -2,9 +2,8 @@ import React from 'react';
 import {
     appContainer,
     StateRef,
-    StateChangeEffect,
+    AppStateEffect,
     utils as onerefUtils,
-    InitialStateEffect,
     update
 } from 'oneref';
 import ReactDOM from 'react-dom';
@@ -24,7 +23,7 @@ const obiWanSubscribe = (listener: ObiWanListener) => {
     };
 };
 
-const init: InitialStateEffect<DashboardAppState> = (
+const init: AppStateEffect<DashboardAppState> = (
     appState: DashboardAppState,
     stateRef: StateRef<DashboardAppState>
 ) => {
