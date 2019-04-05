@@ -14,5 +14,5 @@ export async function showNotificationWithTimeout(
 ): Promise<void> {
     const [_, id] = await awaitableUpdate(stateRef, st => st.show(text));
     await delay(5000);
-    update(stateRef, st => st.hide(id));
+    update<HelloAppState>(stateRef, st => st.hide(id));
 }

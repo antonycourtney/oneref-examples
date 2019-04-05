@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 import {
     appContainer,
     StateRef,
-    StateChangeEffect,
     utils as onerefUtils,
-    InitialStateEffect,
     update
 } from 'oneref';
 

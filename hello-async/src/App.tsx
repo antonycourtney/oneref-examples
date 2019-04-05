@@ -26,10 +26,11 @@ const App: React.FunctionComponent<HelloAppProps> = ({
         <div className="App">
             <div className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
-                <h2>Welcome to React</h2>
+                <h2>Hello, Async!</h2>
             </div>
             <p className="App-intro">
-                To get started, edit <code>src/App.js</code> and save to reload.
+                To see the labels display for a brief period, click the buttons
+                below.
             </p>
             <div>
                 <button
