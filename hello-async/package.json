@@ -1,5 +1,5 @@
 {
-    "name": "oneref-example-flux-challenge",
+    "name": "hello-async",
     "version": "1.0.0",
     "private": true,
     "dependencies": {
@@ -20,7 +20,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "prettier": "prettier --write src/*.ts* src/components/*.ts*"
+        "prettier": "prettier --write src/*.ts*"
     },
     "eslintConfig": {
         "extends": "react-app"

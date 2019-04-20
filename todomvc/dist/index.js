@@ -1,0 +1,10 @@
+import React from 'react';
+import * as oneref from 'oneref';
+import ReactDOM from 'react-dom';
+import TodoListEditor from './components/TodoListEditor';
+import TodoAppState from './todoAppState';
+import 'todomvc-common/base.css';
+import 'todomvc-app-css/index.css';
+var initialAppState = new TodoAppState();
+var TodoApp = oneref.appContainer(initialAppState, TodoListEditor);
+ReactDOM.render(React.createElement(TodoApp, null), document.getElementsByClassName('todoapp')[0]);
