@@ -20,7 +20,7 @@ interface HeaderProps {
 const Header = ({ stateRef }: HeaderProps) => {
     const onSave = (text: string) => {
         if (text.trim()) {
-            update(stateRef, actions.create(text));
+            update(stateRef, actions.createTodo(text));
         }
     };
 
