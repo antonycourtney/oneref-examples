@@ -21,7 +21,7 @@ const init: AppStateEffect<TodoAppState> = (
     const serviceIter = onerefUtils.publisherAsyncIterable(
         todoServer.subscribe
     );
-    const stIter = onerefUtils.aiMap(serviceIter, actions.create);
+    const stIter = onerefUtils.aiMap(serviceIter, actions.createTodo);
     onerefUtils.updateFromIterable(stateRef, stIter);
 };
 

@@ -3,8 +3,10 @@ import TodoAppState from './todoAppState';
 
 type StateTransformer<T> = (s: T) => T;
 
-export const create = (text: string): StateTransformer<TodoAppState> => state =>
-    state.addItem(new TodoItem(text));
+export const createTodo = (text: string): StateTransformer<TodoAppState> => {
+    const item = new TodoItem(text);
+    return state => state.addItem(item);
+};
 
 export const clearCompleted: StateTransformer<TodoAppState> = state => {
     const completedIds = state

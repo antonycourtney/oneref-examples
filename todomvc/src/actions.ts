@@ -2,9 +2,10 @@ import TodoItem from './todoItem';
 import TodoAppState from './todoAppState';
 import { StateTransformer } from 'oneref';
 
-export const createTodo = (
-    text: string
-): StateTransformer<TodoAppState> => state => state.addItem(new TodoItem(text));
+export const createTodo = (text: string): StateTransformer<TodoAppState> => {
+    const item = new TodoItem(text);
+    return state => state.addItem(item);
+};
 
 export const clearCompleted: StateTransformer<TodoAppState> = state => {
     const completedIds = state

@@ -6,7 +6,6 @@ import { utils as onerefUtils } from 'oneref';
 
 const { delay } = onerefUtils;
 
-type TodoListener = (entry: string) => void;
 
 let entries = [
     'buy milk',
@@ -27,6 +26,7 @@ const postEntry = (subState: string[], listener: TodoListener) => {
     }
 };
 
+type TodoListener = (entry: string) => void;
 export const subscribe = (listener: TodoListener) => {
     // initialize subscription state from entries:
     const subState = entries.slice(0);
