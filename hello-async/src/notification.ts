@@ -12,12 +12,10 @@ const defaultNotificationProps: notificationProps = {
     text: ''
 };
 
-let nextNotificationId = 0;
-
 export default class Notification extends Immutable.Record(
     defaultNotificationProps
 ) {
-    constructor(text: string) {
-        super({ id: nextNotificationId++, text });
+    constructor(id: number, text: string) {
+        super({ id, text });
     }
 }
