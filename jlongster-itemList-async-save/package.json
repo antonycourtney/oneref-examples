@@ -1,5 +1,5 @@
 {
-    "name": "oneref-example-todomvc",
+    "name": "oneref-example-jlongster-itemlist-async-save",
     "version": "1.0.0",
     "private": true,
     "dependencies": {
@@ -13,9 +13,7 @@
         "oneref": "^0.5.0",
         "react": "^16.8.4",
         "react-dom": "^16.8.4",
-        "react-scripts": "2.1.5",
-        "todomvc-app-css": "^2.1.2",
-        "todomvc-common": "^1.0.5"
+        "react-scripts": "2.1.5"
     },
     "scripts": {
         "start": "react-scripts start",
