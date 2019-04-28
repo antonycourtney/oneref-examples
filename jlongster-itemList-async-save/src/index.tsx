@@ -7,10 +7,18 @@ import {
     StateTransformer,
     update
 } from 'oneref';
+import { serverSave } from './itemServer';
+
+enum SaveStatus {
+    Saved = 'Saved',
+    Pending = 'Pending',
+    Failed = 'Failed'
+}
 
 interface ItemData {
     id: number;
     name: string;
+    saveStatus: SaveStatus;
 }
 
 type AppState = {
@@ -19,11 +27,11 @@ type AppState = {
 };
 
 let itemData: ItemData[] = [
-    { id: 1, name: 'Milk Chocolate' },
-    { id: 2, name: 'Dark Chocolate' },
-    { id: 3, name: 'White Chocolate' },
-    { id: 4, name: 'Raw Chocolate' },
-    { id: 5, name: 'Chocolate Milk' }
+    { id: 1, name: 'Milk Chocolate', saveStatus: SaveStatus.Saved },
+    { id: 2, name: 'Dark Chocolate', saveStatus: SaveStatus.Saved },
+    { id: 3, name: 'White Chocolate', saveStatus: SaveStatus.Saved },
+    { id: 4, name: 'Raw Chocolate', saveStatus: SaveStatus.Saved },
+    { id: 5, name: 'Chocolate Milk', saveStatus: SaveStatus.Saved }
 ];
 
 let lastColor: string | undefined;
@@ -46,10 +54,22 @@ interface RowProps {
 }
 
 // actions:
-const saveItem = (item: ItemData): StateTransformer<AppState> => state => ({
+
+// replace item in state with
+const replaceItem = (item: ItemData): StateTransformer<AppState> => state => ({
     ...state,
     items: state.items.map((it: ItemData) => (it.id === item.id ? item : it))
 });
+
+const saveItem = async (stateRef: StateRef<AppState>, item: ItemData) => {
+    // optimistically update local state:
+    const pendingItem = { ...item, saveStatus: SaveStatus.Pending };
+    update(stateRef, replaceItem(pendingItem));
+    const saveResult = await serverSave(item.id, item.name);
+    // And update with result of serverSave:
+    const saveStatus = saveResult ? SaveStatus.Saved : SaveStatus.Failed;
+    update(stateRef, replaceItem({ ...item, saveStatus }));
+};
 
 const editItem = (id: number): StateTransformer<AppState> => state => ({
     ...state,
@@ -70,14 +90,14 @@ let Row = React.memo(({ item, editing, stateRef }: RowProps) => {
                 <input
                     defaultValue={item.name}
                     style={editing ? undefined : { width: 0, opacity: 0 }}
-                    onBlur={e => {
-                        update(
-                            stateRef,
-                            saveItem({ ...item, name: e.target.value })
-                        );
-                    }}
+                    onBlur={e =>
+                        saveItem(stateRef, { ...item, name: e.target.value })
+                    }
                 />
                 {editing ? null : item.name}
+            </div>
+            <div style={{ flex: 0.5 }}>
+                {item.saveStatus == SaveStatus.Saved ? null : item.saveStatus}
             </div>
             <div
                 style={{ backgroundColor: lastColor, width: 25, height: 25 }}
