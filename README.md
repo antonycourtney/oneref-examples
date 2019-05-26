@@ -2,7 +2,7 @@
 
 This repository contains example applications for [OneRef](https://github.com/antonycourtney/oneref), a minimalist approach to unidirectional data flow for React applications.
 
-OneRef and these examples are described in the blog post **TODO: link to article**.
+OneRef and these examples are described in [A Tutorial Introduction to OneRef](https://antsrants.dev/oneref-intro/) and [Asynchrony Support in OneRef](https://antsrants.dev/oneref-async/).
 
 Examples:
 
