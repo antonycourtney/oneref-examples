@@ -4,9 +4,13 @@ This repository contains example applications for [OneRef](https://github.com/an
 
 OneRef and these examples are described in the blog post **TODO: link to article**.
 
-The examples here were ported from the corresponding [Flux examples](https://github.com/facebook/flux/tree/master/examples):
+Examples:
 
-- **todomvc/** - Port of the classic [TodoMVC](http://todomvc.com/) example to OneRef.
+- [todomvc](./todomvc) - Port of the classic [TodoMVC](http://todomvc.com/) example to OneRef
+- [multitodo](./multitodo) - Demonstration of composition in OneRef, by combining two todo lists in one app.
+- [todo-async-basic](./todo-async-basic) - Basic asynchrony in OneRef, by simulating a todo list with simple subscriptions.
+- [hello-aync](./hello-async) - A OneRef implementation of [hello-async](https://github.com/tylerlong/hello-async), based on [this answer](https://stackoverflow.com/questions/35411423/how-to-dispatch-a-redux-action-with-a-timeout/35415559#35415559) to a question on Stack Overflow.
+- [flux-challenge](./flux-challenge) - My answer to the [Flux Challenge](https://github.com/staltz/flux-challenge), by Andre Staltz
 
 # Building and Running the Examples
 

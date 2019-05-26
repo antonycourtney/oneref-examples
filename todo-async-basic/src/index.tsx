@@ -3,7 +3,8 @@ import {
     appContainer,
     StateRef,
     AppStateEffect,
-    utils as onerefUtils
+    utils as onerefUtils,
+    update
 } from 'oneref';
 import ReactDOM from 'react-dom';
 import TodoListEditor from './components/TodoListEditor';
@@ -18,12 +19,23 @@ const init: AppStateEffect<TodoAppState> = (
     appState: TodoAppState,
     stateRef: StateRef<TodoAppState>
 ) => {
+    todoServer.subscribe((entry: string) => {
+        update(stateRef, actions.createTodo(entry));
+    });
+};
+
+/* Alternative formulationg using async iterators: 
+const init: AppStateEffect<TodoAppState> = (
+    appState: TodoAppState,
+    stateRef: StateRef<TodoAppState>
+) => {
     const serviceIter = onerefUtils.publisherAsyncIterable(
         todoServer.subscribe
     );
     const stIter = onerefUtils.aiMap(serviceIter, actions.createTodo);
     onerefUtils.updateFromIterable(stateRef, stIter);
 };
+*/
 
 const initialAppState = new TodoAppState();
 

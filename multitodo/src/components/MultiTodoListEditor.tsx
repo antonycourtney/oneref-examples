@@ -18,23 +18,20 @@ const personalFocus = oneref.focus<MultiTodoAppState, TodoAppState>(
 const MultiTodoListEditor: React.FunctionComponent<
     MultiTodoListEditorProps
 > = ({ appState, stateRef }: MultiTodoListEditorProps) => {
-    const [workTodos, updateWorkTodos] = workFocus(appState, stateRef);
-    const [personalTodos, updatePersonalTodos] = personalFocus(
-        appState,
-        stateRef
-    );
+    const [workTodos, workStateRef] = workFocus(appState, stateRef);
+    const [personalTodos, personalStateRef] = personalFocus(appState, stateRef);
 
     return (
         <>
             <TodoListEditor
                 label="work"
                 appState={workTodos}
-                stateRef={updateWorkTodos}
+                stateRef={workStateRef}
             />
             <TodoListEditor
                 label="personal"
                 appState={personalTodos}
-                stateRef={updatePersonalTodos}
+                stateRef={personalStateRef}
             />
         </>
     );
